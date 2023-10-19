@@ -19,6 +19,11 @@ class _IMCCalculatorState extends State<IMCCalculator> {
   void calcularIMC() {
     double peso = double.tryParse(pesoController.text) ?? 0;
     double altura = double.tryParse(alturaController.text) ?? 0;
+
+    if (altura >= 100) {
+      altura = altura / 100;
+    }
+
     double imc = imcCalculator.calcular(peso, altura);
     String classificacao = imcCalculator.classificar(imc);
 
