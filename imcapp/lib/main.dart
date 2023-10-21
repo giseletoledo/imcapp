@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:imcapp/imccalculator.dart';
+import 'package:imcapp/imc_calculator.dart';
 
 void main() {
   runApp(const MyApp());

@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:imcapp/imc.dart';
-import 'package:imcapp/imcitem.dart';
+import 'package:imcapp/imc_database.dart';
+import 'package:imcapp/imc_item.dart';
+import 'package:imcapp/imc_model.dart';
 
 class IMCCalculator extends StatefulWidget {
   const IMCCalculator({super.key});
@@ -12,11 +14,10 @@ class IMCCalculator extends StatefulWidget {
 class _IMCCalculatorState extends State<IMCCalculator> {
   final TextEditingController pesoController = TextEditingController();
   final TextEditingController alturaController = TextEditingController();
-  final IMC imcCalculator = IMC();
   String resultado = '';
-  List<IMCItem> imcData = [];
+  List<IMCModel> imcData = [];
 
-  void calcularIMC() {
+  Future<void> calcularIMC() async {
     double peso = double.tryParse(pesoController.text) ?? 0;
     double altura = double.tryParse(alturaController.text) ?? 0;
 
@@ -24,12 +25,21 @@ class _IMCCalculatorState extends State<IMCCalculator> {
       altura = altura / 100;
     }
 
-    double imc = imcCalculator.calcular(peso, altura);
-    String classificacao = imcCalculator.classificar(imc);
+    IMCModel imcModel = IMCModel(peso, altura);
+    double imc = imcModel.calcularIMC();
+    String classificacao = imcModel.classificarIMC();
+
+    // Save IMC to the database
+    IMCDatabase db = IMCDatabase();
+    await db.saveIMC(imcModel);
+    if (kDebugMode) {
+      print(
+          "Saved IMC: ${imcModel.peso} kg, ${imcModel.altura} m, IMC: ${imcModel.calcularIMC()}");
+    }
 
     setState(() {
       resultado = 'Seu IMC é ${imc.toStringAsFixed(2)} - $classificacao';
-      imcData.add(IMCItem(peso: peso, altura: altura, imc: imc));
+      imcData.add(imcModel);
     });
   }
 
@@ -106,7 +116,15 @@ class _IMCCalculatorState extends State<IMCCalculator> {
               child: ListView.builder(
                 itemCount: imcData.length,
                 itemBuilder: (context, index) {
-                  return imcData[index];
+                  final item = imcData[index];
+                  final imcCalc = imcData[index].calcularIMC();
+                  return ListTile(
+                    title: IMCItem(
+                      peso: item.peso,
+                      altura: item.altura,
+                      imc: imcCalc,
+                    ),
+                  );
                 },
               ),
             ),

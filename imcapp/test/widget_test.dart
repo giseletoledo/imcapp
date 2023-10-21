@@ -7,8 +7,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:imcapp/imc.dart';
-import 'package:imcapp/imccalculator.dart';
+import 'package:imcapp/imc_model.dart';
+import 'package:imcapp/imc_calculator.dart';
 
 void main() {
   testWidgets('Teste de cálculo de IMC', (WidgetTester tester) async {
@@ -27,16 +27,19 @@ void main() {
   });
 
   test('Teste de classificação de IMC', () {
-    final imc = IMC();
+    // Define um valor de altura constante para os testes
+    const altura = 1.75; // Substitua pelo valor desejado
 
     // Teste classificações de IMC
-    expect(imc.classificar(15), 'Magreza grave');
-    expect(imc.classificar(16.5), 'Magreza moderada');
-    expect(imc.classificar(18.0), 'Magreza leve');
-    expect(imc.classificar(23), 'Saudável');
-    expect(imc.classificar(27.5), 'Sobrepeso');
-    expect(imc.classificar(32.0), 'Obesidade Grau I');
-    expect(imc.classificar(37.5), 'Obesidade Grau II (severa)');
-    expect(imc.classificar(42), 'Obesidade Grau III (mórbida)');
+    expect(IMCModel(15, altura).classificarIMC(), 'Magreza grave');
+    expect(IMCModel(16.5, altura).classificarIMC(), 'Magreza moderada');
+    expect(IMCModel(18.0, altura).classificarIMC(), 'Magreza leve');
+    expect(IMCModel(23, altura).classificarIMC(), 'Saudável');
+    expect(IMCModel(27.5, altura).classificarIMC(), 'Sobrepeso');
+    expect(IMCModel(32.0, altura).classificarIMC(), 'Obesidade Grau I');
+    expect(
+        IMCModel(37.5, altura).classificarIMC(), 'Obesidade Grau II (severa)');
+    expect(
+        IMCModel(42, altura).classificarIMC(), 'Obesidade Grau III (mórbida)');
   });
 }

@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
 class IMCItem extends StatelessWidget {
-  const IMCItem(
-      {super.key, required this.peso, required this.altura, required this.imc});
+  const IMCItem({
+    Key? key,
+    required this.peso,
+    required this.altura,
+    required this.imc,
+  }) : super(key: key);
+
   final double peso;
   final double altura;
   final double imc;
