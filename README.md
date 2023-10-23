@@ -40,11 +40,15 @@ Para executar o aplicativo Flutter, siga os passos abaixo:
 * Abra o terminal na pasta do seu projeto Flutter.
 * Execute o seguinte comando para iniciar o aplicativo no emulador ou dispositivo conectado:
 
-``` flutter run```
+```
+flutter run
+```
 
 
 ## Executando Testes
 
 Para executar os testes do seu aplicativo, use o seguinte comando no terminal, na pasta do seu projeto Flutter:
 
-``` flutter test```
+``` 
+flutter test
+```
